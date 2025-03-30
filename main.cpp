@@ -5,9 +5,9 @@
 
 int main() {
 
-
-
-
+    SmartPointers ptrs;
+    std::shared_ptr<std::string> ptr = std::make_shared<std::string>("hello");
+    ptrs.make_pointers(ptr);
 
     // template class code
     // mynamespace::MyTemplate<int> obj(42);  // int spec
@@ -15,10 +15,6 @@ int main() {
 
     // mynamespace::MyTemplate<std::string> strObj("Hello, Templates!"); // string spec
     // strObj.display();
-
-    SmartPointers ptrs;
-    std::shared_ptr<std::string> ptr = std::make_shared<std::string>("hello");
-    ptrs.make_pointers(ptr);
 
     return 0;
 }

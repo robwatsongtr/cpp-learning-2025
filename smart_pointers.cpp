@@ -13,7 +13,7 @@ void SmartPointers::make_pointers(std::shared_ptr<std::string> &of) {
     std::shared_ptr<std::string> *pointers[100];
     for (int i=0; i < 100; ++i) {
         std::shared_ptr<std::string> *new_ptr = new std::shared_ptr<std::string>();
-        (*new_ptr) = of;
+        (*new_ptr) = of; // making a copy of the pointer 
         pointers[i] = new_ptr;
     }
     std::cout << "count is " << of.use_count() << std::endl;
