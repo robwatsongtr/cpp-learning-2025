@@ -8,17 +8,37 @@
 
 
 class LRUCache {
-public:
-    LRUCache();
-    ~LRUCache();
-
 private:
-    size_t _capacity; 
-    // in this non templated implementation, each list node is ("string", int)
-    std::list<std::pair<std::string, int>> _node; 
-    // the map stores the same key as within the list node, and an iterator back to the list
-    // the iterator needs to be of the same type as the list  
-    std::unordered_map<std::string, std::list<std::pair<std::string, int>>::iterator> _map;
+    struct DLLNode {
+        std::string key;
+        std::string value;
+        DLLNode* prev;
+        DLLNode* next;
+ 
+        DLLNode(const std::string& k, const std::string& v) : key(k), value(v), prev(nullptr), next(nullptr) {}
+    };
+
+    std::unordered_map<std::string, DLLNode*> lookup;
+    DLLNode* head = nullptr; // most recently used
+    DLLNode* tail = nullptr; // least recently used 
+    size_t capacity; 
+
+    void addNewNode(const std::string& key, const std::string& value) {
+        DLLNode* newNode = new DLLNode(key, value);
+
+        if (head == nullptr) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+    }
+
+public:
+
+    
 };
 
 #endif
