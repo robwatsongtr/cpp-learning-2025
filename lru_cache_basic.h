@@ -15,26 +15,16 @@ private:
         DLLNode* prev;
         DLLNode* next;
  
-        DLLNode(const std::string& k, const std::string& v) : key(k), value(v), prev(nullptr), next(nullptr) {}
+        DLLNode(const std::string& k, const std::string& v);
     };
 
     std::unordered_map<std::string, DLLNode*> lookup;
     DLLNode* head = nullptr; // most recently used
     DLLNode* tail = nullptr; // least recently used 
     size_t capacity; 
+    int length; 
 
-    void addNewNode(const std::string& key, const std::string& value) {
-        DLLNode* newNode = new DLLNode(key, value);
-
-        if (head == nullptr) {
-            head = newNode;
-            tail = newNode;
-        } else {
-            newNode->next = head;
-            head->prev = newNode;
-            head = newNode;
-        }
-    }
+    void addNewNode(const std::string& key, const std::string& value);
 
 public:
 
