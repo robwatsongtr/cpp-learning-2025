@@ -9,15 +9,48 @@ LRUCache::LRUCache() {}
 
 LRUCache::~LRUCache() {}
 
-void LRUCache::addNewNode(const std::string& key, const std::string& value) {
-    DLLNode* newNode = new DLLNode(key, value);
+
+void LRUCache::addNodeToHead(DLLNode* node) {
     if (head == nullptr) {
-        head = newNode;
-        tail = newNode;
+        head = node;
+        tail = node;
     } else {
-        newNode->next = head;
-        head->prev = newNode;
-        head = newNode;
+        node->next = head;
+        head->prev = node;
+        head = node;
     }
 }
 
+void LRUCache::removeNode(DLLNode* node) {
+    if (node != head) {
+        node->prev->next = node->next; // rewire forwards
+        node->next->prev = node->prev; // rewire backwards 
+    } else {
+        head = head->next; 
+        // edge case if head ends up being last node 
+        if (head) {
+            head->prev = nullptr;
+        }
+    }
+    if (node == tail) {
+        tail = tail->prev;
+        // edge case if tail ends up being last node 
+        if (tail) {
+            tail->next = nullptr;
+        }
+    }
+    delete node; 
+}
+
+void LRUCache::moveToHead(DLLNode* node) {
+    removeNode(node);
+    addNodeToHead(node);
+}
+
+void LRUCache::evictCache() {
+    if (tail) {
+        lookup.erase(tail->key);
+        removeNode(tail);
+        length--;
+    }
+}

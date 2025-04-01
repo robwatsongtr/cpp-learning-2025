@@ -24,10 +24,17 @@ private:
     size_t capacity; 
     int length; 
 
-    void addNewNode(const std::string& key, const std::string& value);
-
+    DLLNode* createNode(const std::string& key, const std::string& value) {
+        return new DLLNode(key, value);
+    }
+    
+    void addNodeToHead(DLLNode* node);
+    void removeNode(DLLNode* node);
+    void moveToHead(DLLNode* node);
+    
+    
 public:
-
+    void evictCache();
     
 };
 
