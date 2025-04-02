@@ -15,27 +15,28 @@ private:
         DLLNode* prev;
         DLLNode* next;
  
+        // noode constructor definition
         DLLNode(const std::string& k, const std::string& v);
     };
 
     std::unordered_map<std::string, DLLNode*> lookup;
-    DLLNode* head = nullptr; // most recently used
-    DLLNode* tail = nullptr; // least recently used 
+    DLLNode* head; // most recently used
+    DLLNode* tail; // least recently used 
     size_t capacity; 
-    int length; 
+    size_t length; 
 
-    DLLNode* createNode(const std::string& key, const std::string& value) {
-        return new DLLNode(key, value);
-    }
-    
     void addNodeToHead(DLLNode* node);
     void removeNode(DLLNode* node);
     void moveToHead(DLLNode* node);
     
-    
 public:
+    // LRU Cache constructor definition 
+    LRUCache(size_t cap);
+    // LRU Cache destructor definition 
+    ~LRUCache();
+    void put(const std::string& key, const std::string& value);
+    int get(const std::string& key);
     void evictCache();
-    
 };
 
 #endif
