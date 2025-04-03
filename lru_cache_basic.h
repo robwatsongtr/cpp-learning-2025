@@ -1,11 +1,10 @@
 #ifndef LRUCACHE_H
 #define LRUCACHE_H
 
-#include <string>
+#include <iostream>
 #include <unordered_map>
 #include <variant>
-
-
+#include <string>
 
 class LRUCache {
 private:
@@ -15,7 +14,7 @@ private:
         DLLNode* prev;
         DLLNode* next;
  
-        // noode constructor definition
+        // node constructor definition
         DLLNode(const std::string& k, const std::string& v);
     };
 
@@ -34,9 +33,10 @@ public:
     LRUCache(size_t cap);
     // LRU Cache destructor definition 
     ~LRUCache();
-    void put(const std::string& key, const std::string& value);
-    std::variant<std::string, int> get(const std::string& key);
+    void put(const std::string& key, const std::string& value); 
+    std::string get(const std::string& key);
     void evictCache();
+    void print();
 };
 
 #endif

@@ -1,4 +1,6 @@
 #include "lru_cache_basic.h"
+#include <iostream>
+#include <string>
 
 // DLL Node constructor implementation
 LRUCache::DLLNode::DLLNode(const std::string& k, const std::string& v) : 
@@ -33,6 +35,7 @@ void LRUCache::addNodeToHead(DLLNode* node) {
     }
 }
 
+// this leaks memory in runtime probably but TODO I will fix 
 void LRUCache::removeNode(DLLNode* node) {
     if (node == head && node == tail) {
         head = nullptr;
@@ -85,7 +88,7 @@ void LRUCache::put(const std::string& key, const std::string& value) {
         existingNode->value = value; // update with new value
         moveToHead(existingNode); // make most recently used 
     } else {
-        // key not found make new node and add to hashmap
+        // key not found make new node and add to hashmap. Unless at capacity.
         if (length == capacity) {
             evictCache();
         }
@@ -96,12 +99,20 @@ void LRUCache::put(const std::string& key, const std::string& value) {
     }   
 }
 
-std::variant<std::string, int> LRUCache::get(const std::string& key) {
+std::string LRUCache::get(const std::string& key) {
     auto it = lookup.find(key);
     if (it != lookup.end()) {
         DLLNode* retrievedNode = it->second;
         moveToHead(retrievedNode);
         return retrievedNode->value;
     }
-    return -1;
+    return "not found";
+}
+
+void LRUCache::print() {
+    DLLNode* curr = head;
+    while (curr != nullptr) {
+        std::cout << "Key: " << curr->key << " Value:  " << curr->value << std::endl;
+        curr = curr->next; 
+    }
 }
