@@ -1,10 +1,10 @@
 #ifndef LRUCACHE_H
 #define LRUCACHE_H
 
-#include <iostream>
+#include <string>
 #include <unordered_map>
-#include <list>
-#include <iterator>
+#include <variant>
+
 
 
 class LRUCache {
@@ -35,7 +35,7 @@ public:
     // LRU Cache destructor definition 
     ~LRUCache();
     void put(const std::string& key, const std::string& value);
-    int get(const std::string& key);
+    std::variant<std::string, int> get(const std::string& key);
     void evictCache();
 };
 

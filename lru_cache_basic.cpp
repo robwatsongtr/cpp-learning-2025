@@ -34,24 +34,27 @@ void LRUCache::addNodeToHead(DLLNode* node) {
 }
 
 void LRUCache::removeNode(DLLNode* node) {
-    if (node != head) {
-        node->prev->next = node->next; // rewire forwards
-        node->next->prev = node->prev; // rewire backwards 
-    } else {
+    if (node == head && node == tail) {
+        head = nullptr;
+        tail = nullptr;
+    } else if (node == head) {
         head = head->next; 
-        // edge case if head ends up being last node 
+        //edge case if head ends up being last node 
         if (head) {
             head->prev = nullptr;
         }
-    }
-    if (node == tail) {
+    } else if (node == tail) {
         tail = tail->prev;
-        // edge case if tail ends up being last node 
+        // if tail ends up being last node 
         if (tail) {
             tail->next = nullptr;
         }
+    } else {
+        node->prev->next = node->next; // rewire forwards
+        node->next->prev = node->prev; // rewire backwards
     }
 }
+
 
 // make most recently used 
 void LRUCache::moveToHead(DLLNode* node) {
@@ -76,7 +79,6 @@ void LRUCache::evictCache() {
 
 void LRUCache::put(const std::string& key, const std::string& value) {
     auto it = lookup.find(key);
-
     if (it != lookup.end()) {
         // key found, so make MRU 
         DLLNode* existingNode = it->second; // the reference is in the value 
@@ -92,4 +94,14 @@ void LRUCache::put(const std::string& key, const std::string& value) {
         lookup[key] = newLRUNode;
         length++;
     }   
+}
+
+std::variant<std::string, int> LRUCache::get(const std::string& key) {
+    auto it = lookup.find(key);
+    if (it != lookup.end()) {
+        DLLNode* retrievedNode = it->second;
+        moveToHead(retrievedNode);
+        return retrievedNode->value;
+    }
+    return -1;
 }
