@@ -16,7 +16,7 @@ int main() {
 
     // test 2: insert key value pair 
     my_cache.put("a", "Rob loves C++. Kind of.");
-    assert(my_cache.get("a") == "Rob loves C++. Kind "); 
+    assert(my_cache.get("a") == "Rob loves C++. Kind of."); 
 
     // test 3: fill up cache to capacity 
     my_cache.put("b", "This is a bunch of data I'm caching");
