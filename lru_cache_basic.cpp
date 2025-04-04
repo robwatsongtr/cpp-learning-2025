@@ -35,7 +35,6 @@ void LRUCache::addNodeToHead(DLLNode* node) {
     }
 }
 
-// this leaks memory in runtime probably but TODO I will fix 
 void LRUCache::removeNode(DLLNode* node) {
     if (node == head && node == tail) {
         head = nullptr;
@@ -59,7 +58,7 @@ void LRUCache::removeNode(DLLNode* node) {
 }
 
 
-// make most recently used 
+// make most recently used. Doesn't leak memory because reuses the same pointer.
 void LRUCache::moveToHead(DLLNode* node) {
     if (node == head) return; // Already MRU
     removeNode(node);
@@ -112,7 +111,7 @@ std::string LRUCache::get(const std::string& key) {
 void LRUCache::print() {
     DLLNode* curr = head;
     while (curr != nullptr) {
-        std::cout << "Key: " << curr->key << " Value:  " << curr->value << std::endl;
+        std::cout << "Key: " << curr->key << " Value: " << curr->value << std::endl;
         curr = curr->next; 
     }
 }
