@@ -37,6 +37,7 @@ public:
     std::string get(const std::string& key);
     void evictCache();
     void print();
+    static void runTestsBasicCache();
 };
 
 #endif
