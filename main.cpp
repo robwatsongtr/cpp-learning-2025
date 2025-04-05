@@ -9,6 +9,8 @@
 #include <string>
 #include <cassert>
 
+// to compile and get an executable:
+// g++ -std=c++11 main.cpp lru_cache_basic.cpp -o lru_cache
 
 int main() {
 

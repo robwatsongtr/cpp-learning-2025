@@ -82,7 +82,6 @@ public:
         lookup.clear();
     }
 
-    template<typename Key, typename Value>
     void put(const Key& key, const Value& value) {
         auto it = lookup.find(key);
         if (it != lookup.end()) {
@@ -102,7 +101,6 @@ public:
         }   
     } 
 
-    template<typename Key, typename Value>
     std::string get(const Key& key) {
         auto it = lookup.find(key);
         if (it != lookup.end()) {
