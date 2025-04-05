@@ -7,7 +7,8 @@ LRUCache::DLLNode::DLLNode(const std::string& k, const std::string& v) :
     key(k), value(v), prev(nullptr), next(nullptr) {}
 
 // LRU Cache constructor impelmentation 
-LRUCache::LRUCache(size_t cap) : capacity(cap), length(0), head(nullptr), tail(nullptr) {}
+LRUCache::LRUCache(size_t cap) : 
+    capacity(cap), length(0), head(nullptr), tail(nullptr) {}
 
 // LRU Cache destructor implementation. Free all linked list memory. 
 LRUCache::~LRUCache() {
@@ -119,6 +120,7 @@ void LRUCache::print() {
 void LRUCache::runTestsBasicCache() {
     // test 1: requeset a missing key
     LRUCache my_cache(3);
+    std::cout << "-----Tests on Basic Cache (string key, string value)-----" << std::endl;
     assert(my_cache.get("a") == "not found");
 
     // test 2: insert key value pair 
@@ -154,5 +156,5 @@ void LRUCache::runTestsBasicCache() {
     std::cout << "Data requested: " << getLdata << std::endl; 
     assert(getLdata == "not found");
 
-    std::cout << "🎉 All LRU Cache tests passed!\n";
+    std::cout << "🎉 All basic LRU Cache tests passed!\n";
 }

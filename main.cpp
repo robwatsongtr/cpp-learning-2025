@@ -3,15 +3,21 @@
 // #include "smart_pointers.h"
 // #include <memory>
 
-#include <iostream>
+#include "lru_cache_generic.h"
 #include "lru_cache_basic.h"
+#include <iostream>
 #include <string>
 #include <cassert>
 
+
 int main() {
 
-   
+    // test basic cache that is set to string string manually
     LRUCache::runTestsBasicCache();
+    
+    // test generic cache. string string is placeholder for the compiler since its a templated class. 
+    LRUCacheGeneric<std::string, std::string>::runTestsGenericCache();
+
 
     // SmartPointers ptrs;
     // std::shared_ptr<std::string> ptr = std::make_shared<std::string>("hello");
