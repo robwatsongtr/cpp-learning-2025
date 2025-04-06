@@ -4,6 +4,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <string>
+#include <cassert>
 
 template<typename Key, typename Value>
 class LRUCacheGeneric {
