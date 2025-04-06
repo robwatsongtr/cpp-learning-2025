@@ -1,23 +1,24 @@
 #include "lru_cache_basic.h"
 #include <iostream>
 #include <string>
+#include <cassert>
 
 // DLL Node constructor implementation
-LRUCache::DLLNode::DLLNode(const std::string& k, const std::string& v) : 
+LRUCache::DLLNode::DLLNode(const std::string& k, const std::string& v) :
     key(k), value(v), prev(nullptr), next(nullptr) {}
 
-// LRU Cache constructor impelmentation 
-LRUCache::LRUCache(size_t cap) : 
+// LRU Cache constructor impelmentation
+LRUCache::LRUCache(size_t cap) :
     capacity(cap), length(0), head(nullptr), tail(nullptr) {}
 
-// LRU Cache destructor implementation. Free all linked list memory. 
+// LRU Cache destructor implementation. Free all linked list memory.
 LRUCache::~LRUCache() {
     // free memory of any remaining nodes in the DLL
     DLLNode* curr = head;
     while(curr != nullptr) {
         DLLNode* temp = curr;
         curr = curr->next;
-        delete temp; 
+        delete temp;
     }
     // clear out the map
     lookup.clear();
@@ -41,14 +42,14 @@ void LRUCache::removeNode(DLLNode* node) {
         head = nullptr;
         tail = nullptr;
     } else if (node == head) {
-        head = head->next; 
-        //edge case if head ends up being last node 
+        head = head->next;
+        //edge case if head ends up being last node
         if (head) {
             head->prev = nullptr;
         }
     } else if (node == tail) {
         tail = tail->prev;
-        // if tail ends up being last node 
+        // if tail ends up being last node
         if (tail) {
             tail->next = nullptr;
         }
@@ -74,19 +75,19 @@ void LRUCache::evictCache() {
         lookup.erase(tail->key); // remove from hashmap
         DLLNode* oldTail = tail; // copy pointer to tail
         removeNode(tail); // detach tail from DLL
-        delete oldTail; // free memory 
+        delete oldTail; // free memory
         tail = nullptr; // prevent dangling pointer
-        length--; // decrement cache size 
+        length--; // decrement cache size
     }
 }
 
 void LRUCache::put(const std::string& key, const std::string& value) {
     auto it = lookup.find(key);
     if (it != lookup.end()) {
-        // key found, so make MRU 
-        DLLNode* existingNode = it->second; // the reference is in the value 
+        // key found, so make MRU
+        DLLNode* existingNode = it->second; // the reference is in the value
         existingNode->value = value; // update with new value
-        moveToHead(existingNode); // make most recently used 
+        moveToHead(existingNode); // make most recently used
     } else {
         // key not found make new node and add to hashmap. Unless at capacity.
         if (length == capacity) {
@@ -96,7 +97,7 @@ void LRUCache::put(const std::string& key, const std::string& value) {
         addNodeToHead(newLRUNode);
         lookup[key] = newLRUNode;
         length++;
-    }   
+    }
 }
 
 std::string LRUCache::get(const std::string& key) {
@@ -113,7 +114,7 @@ void LRUCache::print() {
     DLLNode* curr = head;
     while (curr != nullptr) {
         std::cout << "Key: " << curr->key << " Value: " << curr->value << std::endl;
-        curr = curr->next; 
+        curr = curr->next;
     }
 }
 
@@ -123,37 +124,37 @@ void LRUCache::runTestsBasicCache() {
     std::cout << "-----Tests on Basic Cache (string key, string value)-----" << std::endl;
     assert(my_cache.get("a") == "not found");
 
-    // test 2: insert key value pair 
+    // test 2: insert key value pair
     my_cache.put("a", "Rob loves C++. Kind of.");
-    assert(my_cache.get("a") == "Rob loves C++. Kind of."); 
+    assert(my_cache.get("a") == "Rob loves C++. Kind of.");
 
-    // test 3: fill up cache to capacity 
+    // test 3: fill up cache to capacity
     my_cache.put("b", "This is a bunch of data I'm caching");
     my_cache.put("c", "Holy sh&$ this is more data I might need");
 
     std::cout << "initial state" << std::endl;
     my_cache.print(); // initial state "c", "b", "a"
-    std::cout << std::endl; 
+    std::cout << std::endl;
 
-    // test 4: access "b", which should move it to head 
-    std::string getBdata = my_cache.get("b"); 
-    std::cout << "Data requested: " << getBdata << std::endl; 
+    // test 4: access "b", which should move it to head
+    std::string getBdata = my_cache.get("b");
+    std::cout << "Data requested: " << getBdata << std::endl;
     std::cout << "b moved to head" << std::endl;
     my_cache.print(); // "b", "c", "a"
-    std::cout << std::endl; 
+    std::cout << std::endl;
 
-    // test 5: Insert "d" which should evict "a" off the tail   
+    // test 5: Insert "d" which should evict "a" off the tail
     my_cache.put("d", "Brand new data so important");
-    std::cout << std::endl; 
+    std::cout << std::endl;
     std::cout << "Inserted new key 'd', evict 'a', add 'd' to head:" << std::endl;
     my_cache.print(); // "d", "b" , "c "
     assert(my_cache.get("a") == "not found"); // ensure "a" was evicted
 
-    // test 6: try getting a missing key 
+    // test 6: try getting a missing key
     std::cout << std::endl;
     std::cout << "Get a key that doesnt exist: " << std::endl;
     std::string getLdata = my_cache.get("l");
-    std::cout << "Data requested: " << getLdata << std::endl; 
+    std::cout << "Data requested: " << getLdata << std::endl;
     assert(getLdata == "not found");
 
     std::cout << "🎉 All basic LRU Cache tests passed!\n";

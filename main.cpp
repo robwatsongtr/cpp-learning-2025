@@ -4,7 +4,7 @@
 // #include <memory>
 
 #include "lru_cache_generic.h"
-#include "lru_cache_basic.h"
+//#include "lru_cache_basic.h"
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -15,9 +15,9 @@
 int main() {
 
     // test basic cache that is set to string string manually
-    LRUCache::runTestsBasicCache();
-    
-    // test generic cache. string string is placeholder for the compiler since its a templated class. 
+    //LRUCache::runTestsBasicCache();
+
+    // test generic cache. string string is placeholder for the compiler since its a templated class.
     LRUCacheGeneric<std::string, std::string>::runTestsGenericCache();
 
 

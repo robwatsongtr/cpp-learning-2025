@@ -14,16 +14,16 @@ private:
         Value value;
         DLLNode* prev;
         DLLNode* next;
- 
-        DLLNode(const Key& k, const Value& v) : 
+
+        DLLNode(const Key& k, const Value& v) :
             key(k), value(v), prev(nullptr), next(nullptr) {}
     };
 
     std::unordered_map<Key, DLLNode*> lookup;
     DLLNode* head; // most recently used
-    DLLNode* tail; // least recently used 
-    size_t capacity; 
-    size_t length; 
+    DLLNode* tail; // least recently used
+    size_t capacity;
+    size_t length;
 
     void addNodeToHead(DLLNode* node) {
         if (head == nullptr) {
@@ -41,14 +41,14 @@ private:
             head = nullptr;
             tail = nullptr;
         } else if (node == head) {
-            head = head->next; 
-            //edge case if head ends up being last node 
+            head = head->next;
+            //edge case if head ends up being last node
             if (head) {
                 head->prev = nullptr;
             }
         } else if (node == tail) {
             tail = tail->prev;
-            // if tail ends up being last node 
+            // if tail ends up being last node
             if (tail) {
                 tail->next = nullptr;
             }
@@ -64,20 +64,20 @@ private:
         removeNode(node);
         addNodeToHead(node);
     }
-    
+
 public:
-    // LRU Cache constructor 
-    LRUCacheGeneric(size_t cap) : 
+    // LRU Cache constructor
+    LRUCacheGeneric(size_t cap) :
         capacity(cap), length(0), head(nullptr), tail(nullptr) {}
 
-    // LRU Cache destructor. Free all linked list memory.  
+    // LRU Cache destructor. Free all linked list memory.
     ~LRUCacheGeneric() {
         // free memory of any remaining nodes in the DLL
         DLLNode* curr = head;
         while(curr != nullptr) {
             DLLNode* temp = curr;
             curr = curr->next;
-            delete temp; 
+            delete temp;
         }
         // clear out the map
         lookup.clear();
@@ -86,10 +86,10 @@ public:
     void put(const Key& key, const Value& value) {
         auto it = lookup.find(key);
         if (it != lookup.end()) {
-            // key found, so make MRU 
-            DLLNode* existingNode = it->second; // the reference is in the value 
+            // key found, so make MRU
+            DLLNode* existingNode = it->second; // the reference is in the value
             existingNode->value = value; // update with new value
-            moveToHead(existingNode); // make most recently used 
+            moveToHead(existingNode); // make most recently used
         } else {
             // key not found make new node and add to hashmap. Unless at capacity.
             if (length == capacity) {
@@ -99,10 +99,10 @@ public:
             addNodeToHead(newLRUNode);
             lookup[key] = newLRUNode;
             length++;
-        }   
-    } 
+        }
+    }
 
-    std::string get(const Key& key) {
+    Value get(const Key& key) {
         auto it = lookup.find(key);
         if (it != lookup.end()) {
             DLLNode* retrievedNode = it->second;
@@ -118,9 +118,9 @@ public:
             lookup.erase(tail->key); // remove from hashmap
             DLLNode* oldTail = tail; // copy pointer to tail
             removeNode(tail); // detach tail from DLL
-            delete oldTail; // free memory 
+            delete oldTail; // free memory
             tail = nullptr; // prevent dangling pointer
-            length--; // decrement cache size 
+            length--; // decrement cache size
         }
     }
 
@@ -128,7 +128,7 @@ public:
         DLLNode* curr = head;
         while (curr != nullptr) {
             std::cout << "Key: " << curr->key << " Value: " << curr->value << std::endl;
-            curr = curr->next; 
+            curr = curr->next;
         }
     }
 
