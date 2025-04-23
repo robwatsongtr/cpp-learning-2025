@@ -1,5 +1,4 @@
 // #include "templates.h"
-// #include "raw_pointers.h"
 // #include "smart_pointers.h"
 // #include <memory>
 
@@ -10,16 +9,15 @@
 #include <cassert>
 
 // to compile and get an executable:
-//  
+// 
 
 int main() {
 
-    // test basic cache that is set to string string manually
+    // test basic cache 
     LRUCache::runTestsBasicCache();
 
-    // test generic cache. string string is placeholder for the compiler since its a templated class.
+    // test generic cache. <string string> is placeholder for the compiler since it's a templated class.
     LRUCacheGeneric<std::string, std::string>::runTestsGenericCache();
-
 
     // SmartPointers ptrs;
     // std::shared_ptr<std::string> ptr = std::make_shared<std::string>("hello");

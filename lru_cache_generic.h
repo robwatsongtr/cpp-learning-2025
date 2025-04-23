@@ -8,63 +8,6 @@
 
 template<typename Key, typename Value>
 class LRUCacheGeneric {
-private:
-    struct DLLNode {
-        Key key;
-        Value value;
-        DLLNode* prev;
-        DLLNode* next;
-
-        DLLNode(const Key& k, const Value& v) :
-            key(k), value(v), prev(nullptr), next(nullptr) {}
-    };
-
-    std::unordered_map<Key, DLLNode*> lookup;
-    DLLNode* head; // most recently used
-    DLLNode* tail; // least recently used
-    size_t capacity;
-    size_t length;
-
-    void addNodeToHead(DLLNode* node) {
-        if (head == nullptr) {
-            head = node;
-            tail = node;
-        } else {
-            node->next = head;
-            head->prev = node;
-            head = node;
-        }
-    }
-
-    void removeNode(DLLNode* node) {
-        if (node == head && node == tail) {
-            head = nullptr;
-            tail = nullptr;
-        } else if (node == head) {
-            head = head->next;
-            //edge case if head ends up being last node
-            if (head) {
-                head->prev = nullptr;
-            }
-        } else if (node == tail) {
-            tail = tail->prev;
-            // if tail ends up being last node
-            if (tail) {
-                tail->next = nullptr;
-            }
-        } else {
-            node->prev->next = node->next; // rewire forwards
-            node->next->prev = node->prev; // rewire backwards
-        }
-    }
-
-    // make most recently used. Doesn't leak memory because reuses the same pointer.
-    void moveToHead(DLLNode* node) {
-        if (node == head) return; // Already MRU
-        removeNode(node);
-        addNodeToHead(node);
-    }
-
 public:
     // LRU Cache constructor
     LRUCacheGeneric(size_t cap) :
@@ -201,6 +144,62 @@ public:
         std::cout << "🎉 All Generic LRU Cache tests passed!" << std::endl;
     }
 
+private:
+    struct DLLNode {
+        Key key;
+        Value value;
+        DLLNode* prev;
+        DLLNode* next;
+
+        DLLNode(const Key& k, const Value& v) :
+            key(k), value(v), prev(nullptr), next(nullptr) {}
+    };
+
+    std::unordered_map<Key, DLLNode*> lookup;
+    DLLNode* head; // most recently used
+    DLLNode* tail; // least recently used
+    size_t capacity;
+    size_t length;
+
+    void addNodeToHead(DLLNode* node) {
+        if (head == nullptr) {
+            head = node;
+            tail = node;
+        } else {
+            node->next = head;
+            head->prev = node;
+            head = node;
+        }
+    }
+
+    void removeNode(DLLNode* node) {
+        if (node == head && node == tail) {
+            head = nullptr;
+            tail = nullptr;
+        } else if (node == head) {
+            head = head->next;
+            //edge case if head ends up being last node
+            if (head) {
+                head->prev = nullptr;
+            }
+        } else if (node == tail) {
+            tail = tail->prev;
+            // if tail ends up being last node
+            if (tail) {
+                tail->next = nullptr;
+            }
+        } else {
+            node->prev->next = node->next; // rewire forwards
+            node->next->prev = node->prev; // rewire backwards
+        }
+    }
+
+    // make most recently used. Doesn't leak memory because reuses the same pointer.
+    void moveToHead(DLLNode* node) {
+        if (node == head) return; // Already MRU
+        removeNode(node);
+        addNodeToHead(node);
+    }
 };
 
 #endif

@@ -6,6 +6,17 @@
 #include <string>
 
 class LRUCache {
+public:
+    // LRU Cache constructor definition 
+    LRUCache(size_t cap);
+    // LRU Cache destructor definition 
+    ~LRUCache();
+    void put(const std::string& key, const std::string& value); 
+    std::string get(const std::string& key);
+    void evictCache();
+    void print();
+    static void runTestsBasicCache();
+
 private:
     struct DLLNode {
         std::string key;
@@ -26,17 +37,6 @@ private:
     void addNodeToHead(DLLNode* node);
     void removeNode(DLLNode* node);
     void moveToHead(DLLNode* node);
-    
-public:
-    // LRU Cache constructor definition 
-    LRUCache(size_t cap);
-    // LRU Cache destructor definition 
-    ~LRUCache();
-    void put(const std::string& key, const std::string& value); 
-    std::string get(const std::string& key);
-    void evictCache();
-    void print();
-    static void runTestsBasicCache();
 };
 
 #endif
